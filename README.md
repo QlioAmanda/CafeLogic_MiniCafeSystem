@@ -72,5 +72,10 @@ Berikut adalah urutan tampilan aplikasi yang dapat Anda tambahkan sebagai screen
 ## 🚀 Cara Menjalankan Program
 Pastikan berada di direktori utama proyek `CafeLogic_MiniCafeSystem` dan telah menginstal **JDK**.
 
+### 1️⃣ Kompilasi Program
+javac -d bin -sourcepath src src/cafe/app/MainApp.java
+
+### 2️⃣ Jalankan Aplikasi
+java -cp bin cafe.app.MainApp
 ---
-````
+
