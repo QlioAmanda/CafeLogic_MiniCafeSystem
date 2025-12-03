@@ -6,11 +6,11 @@ Simulasi sistem pemesanan kafe modern berbasis **Java Swing**, menerapkan berbag
 
 ## 👥 Informasi Kelompok
 
-| Kelompok       | Anggota              | NIM       |
-| -------------- | -------------------- | --------- |
-| **Cafe Logic** | Helga Athifa Hidayat | 241511087 |
-|                | Nike Kustiane        | 241511086 |
-|                | Qlio Amanda Febriany | 241511087 |
+| Anggota              | NIM       |
+| -------------------- | --------- |
+| Helga Athifa Hidayat | 241511087 |
+| Nike Kustiane        | 241511086 |
+| Qlio Amanda Febriany | 241511087 |
 
 ---
 
@@ -65,8 +65,6 @@ Berikut adalah urutan tampilan aplikasi yang dapat Anda tambahkan sebagai screen
 
 ![Struk Pembayaran](images/struk.png)
 ````
-
-> Pastikan folder **images/** berisi file gambar yang sesuai.
 
 ---
 
