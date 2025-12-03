@@ -111,7 +111,7 @@ public class LoginPanel extends JPanel {
         }
     }
 
-    // --- LOGO KOPI (Definisi Kelas Inner yang Benar) ---
+    // --- LOGO KOPI ---
     class LogoPanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
