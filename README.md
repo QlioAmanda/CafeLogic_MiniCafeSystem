@@ -8,7 +8,7 @@ Simulasi sistem pemesanan kafe modern berbasis **Java Swing**, menerapkan berbag
 
 | Anggota              | NIM       |
 | -------------------- | --------- |
-| Helga Athifa Hidayat | 241511087 |
+| Helga Athifa Hidayat | 241511077 |
 | Nike Kustiane        | 241511086 |
 | Qlio Amanda Febriany | 241511087 |
 
