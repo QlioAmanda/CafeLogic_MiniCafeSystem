@@ -40,10 +40,12 @@ public class MainFrame extends JFrame {
     }
 
     private void initPanels() {
-        // Inisialisasi variabel DULUan
+        // [PENTING] Inisialisasi variabel DULUan
         loginPanel = new LoginPanel(this);
         adminPanel = new AdminPanel(this);
         customerPanel = new CustomerPanel(this);
+
+        // [PENTING] Baru ditambahkan ke panel SETELAH diinisialisasi
         // Jika urutannya terbalik, akan error NullPointerException "comp is null"
         if (loginPanel != null) mainPanel.add(loginPanel, "LOGIN");
         if (adminPanel != null) mainPanel.add(adminPanel, "ADMIN");
