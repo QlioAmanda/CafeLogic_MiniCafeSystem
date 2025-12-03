@@ -1,8 +1,10 @@
-package cafe.service;
+package cafe.test;
 
 import cafe.model.MenuItem;
 import cafe.model.Food;
 import cafe.exception.InsufficientStockException;
+import cafe.service.MenuService;
+import cafe.service.OrderService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
