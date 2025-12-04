@@ -8,11 +8,16 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+import javax.swing.SwingConstants; 
+
 public class PaymentDialog extends JDialog {
+    
     private double grandTotal;
     private double paymentAmount = -1;
     private boolean confirmed = false;
     private JTextField txtCash;
+    
+    private static final String FONT_NAME = "SansSerif";
 
     public PaymentDialog(Frame owner, double subtotal, double ppn, double total) {
         super(owner, true);
@@ -29,7 +34,8 @@ public class PaymentDialog extends JDialog {
         JPanel header = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15));
         header.setBackground(CafeTheme.EXIT_BTN_COLOR);
         JLabel title = new JLabel("PEMBAYARAN");
-        title.setFont(new Font("SansSerif", Font.BOLD, 18));
+        
+        title.setFont(new Font(FONT_NAME, Font.BOLD, 18));
         title.setForeground(Color.WHITE);
         header.add(title);
         mainPanel.add(header, BorderLayout.NORTH);
@@ -51,15 +57,20 @@ public class PaymentDialog extends JDialog {
         contentPanel.add(Box.createVerticalStrut(40));
 
         JLabel lblInput = new JLabel("Masukkan Uang Pembayaran:");
-        lblInput.setFont(new Font("SansSerif", Font.BOLD, 14));
+        
+        lblInput.setFont(new Font(FONT_NAME, Font.BOLD, 14));
         lblInput.setForeground(CafeTheme.TEXT_COLOR);
+        
         lblInput.setAlignmentX(Component.CENTER_ALIGNMENT); 
         contentPanel.add(lblInput);
         contentPanel.add(Box.createVerticalStrut(10));
 
         txtCash = new JTextField();
-        txtCash.setFont(new Font("SansSerif", Font.BOLD, 22));
-        txtCash.setHorizontalAlignment(JTextField.CENTER); 
+        
+        txtCash.setFont(new Font(FONT_NAME, Font.BOLD, 22));
+        
+        txtCash.setHorizontalAlignment(SwingConstants.CENTER); 
+        
         txtCash.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(CafeTheme.EXIT_BTN_COLOR, 2), 
             new EmptyBorder(5, 5, 5, 5)
@@ -104,6 +115,7 @@ public class PaymentDialog extends JDialog {
     }
     public boolean isConfirmed() { return confirmed; }
     public double getPaymentAmount() { return paymentAmount; }
+    
     private void addDetailRow(JPanel panel, String label, double value, boolean isBold) {
         JPanel row = new JPanel(new BorderLayout());
         row.setBackground(CafeTheme.BG_COLOR);
@@ -111,16 +123,22 @@ public class PaymentDialog extends JDialog {
         JLabel lbl = new JLabel(label);
         JLabel val = new JLabel("Rp " + String.format("%,.0f", value));
         if (isBold) {
-            lbl.setFont(new Font("SansSerif", Font.BOLD, 16));
+            
+            lbl.setFont(new Font(FONT_NAME, Font.BOLD, 16));
             lbl.setForeground(CafeTheme.EXIT_BTN_COLOR);
-            val.setFont(new Font("SansSerif", Font.BOLD, 18));
+            
+            val.setFont(new Font(FONT_NAME, Font.BOLD, 18));
             val.setForeground(CafeTheme.EXIT_BTN_COLOR);
         } else {
-            lbl.setFont(new Font("SansSerif", Font.PLAIN, 14));
-            val.setFont(new Font("SansSerif", Font.BOLD, 14));
+            
+            lbl.setFont(new Font(FONT_NAME, Font.PLAIN, 14));
+            
+            val.setFont(new Font(FONT_NAME, Font.BOLD, 14));
         }
         row.add(lbl, BorderLayout.WEST);
         row.add(val, BorderLayout.EAST);
         panel.add(row);
+        
+        panel.add(Box.createVerticalStrut(5)); 
     }
 }

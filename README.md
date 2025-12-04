@@ -8,7 +8,7 @@ Simulasi sistem pemesanan kafe modern berbasis **Java Swing**, menerapkan berbag
 
 | Anggota              | NIM       |
 | -------------------- | --------- |
-| Helga Athifa Hidayat | 241511087 |
+| Helga Athifa Hidayat | 241511077 |
 | Nike Kustiane        | 241511086 |
 | Qlio Amanda Febriany | 241511087 |
 
@@ -64,6 +64,7 @@ Berikut adalah urutan tampilan aplikasi yang dapat Anda tambahkan sebagai screen
 ### 🧾 Struk Pembayaran
 
 ![Struk Pembayaran](images/struk.png)
+
 ````
 
 ---
@@ -72,14 +73,9 @@ Berikut adalah urutan tampilan aplikasi yang dapat Anda tambahkan sebagai screen
 Pastikan berada di direktori utama proyek `CafeLogic_MiniCafeSystem` dan telah menginstal **JDK**.
 
 ### 1️⃣ Kompilasi Program
-
 javac -d bin -sourcepath src src/cafe/app/MainApp.java
 
-
 ### 2️⃣ Jalankan Aplikasi
-
-```bash
 java -cp bin cafe.app.MainApp
-```
-
 ---
+

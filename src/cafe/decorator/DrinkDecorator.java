@@ -5,7 +5,7 @@ import cafe.model.MenuItem;
 public abstract class DrinkDecorator implements MenuItem {
     protected MenuItem drink;
 
-    public DrinkDecorator(MenuItem drink) {
+    protected DrinkDecorator(MenuItem drink) {
         this.drink = drink;
     }
 

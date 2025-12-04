@@ -2,7 +2,7 @@ package cafe.gui.admin;
 
 import cafe.gui.CafeTheme;
 import cafe.gui.components.RoundedButton;
-import cafe.gui.common.ErrorDialog; 
+import cafe.gui.common.ErrorDialog;
 import cafe.factory.MenuFactory;
 import cafe.model.Food;
 import cafe.model.MenuItem;
@@ -12,11 +12,22 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 
 public class MenuDialog extends JDialog {
+
+    // Konstanta untuk Font dan Tipe Menu (Perbaikan Kualitas Kode)
+    private static final String FONT_NAME = "SansSerif";
+    private static final String TYPE_FOOD = "Makanan";
+    private static final String TYPE_DRINK = "Minuman";
+
     private boolean confirmed = false;
-    private MenuItem resultItem;
-    private MenuFactory menuFactory = new MenuFactory();
+  
+    private transient MenuItem resultItem;
+    private transient MenuFactory menuFactory = new MenuFactory();
+
     private JComboBox<String> comboType;
-    private JTextField txtName, txtPrice, txtStock;
+    private JTextField txtName;
+
+    private JTextField txtPrice;
+    private JTextField txtStock;
 
     public MenuDialog(Frame owner, MenuItem itemToEdit) {
         super(owner, true);
@@ -35,7 +46,8 @@ public class MenuDialog extends JDialog {
         JPanel header = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15));
         header.setBackground(CafeTheme.EXIT_BTN_COLOR);
         JLabel title = new JLabel(titleText);
-        title.setFont(new Font("SansSerif", Font.BOLD, 16));
+        // Menggunakan konstanta FONT_NAME
+        title.setFont(new Font(FONT_NAME, Font.BOLD, 16));
         title.setForeground(Color.WHITE);
         header.add(title);
         mainPanel.add(header, BorderLayout.NORTH);
@@ -48,11 +60,13 @@ public class MenuDialog extends JDialog {
         gbc.weightx = 1.0;
 
         addLabel(formPanel, "Tipe:", 0, gbc);
-        String[] types = {"Makanan", "Minuman"};
+        // Menggunakan konstanta TYPE_FOOD dan TYPE_DRINK
+        String[] types = {TYPE_FOOD, TYPE_DRINK};
         comboType = new JComboBox<>(types);
-        comboType.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        // Menggunakan konstanta FONT_NAME
+        comboType.setFont(new Font(FONT_NAME, Font.PLAIN, 14));
         comboType.setBackground(Color.WHITE);
-        if (isEdit) comboType.setSelectedItem(itemToEdit instanceof Food ? "Makanan" : "Minuman");
+        if (isEdit) comboType.setSelectedItem(itemToEdit instanceof Food ? TYPE_FOOD : TYPE_DRINK);
         gbc.gridy = 1; formPanel.add(comboType, gbc);
 
         addLabel(formPanel, "Nama:", 2, gbc);
@@ -103,7 +117,8 @@ public class MenuDialog extends JDialog {
                 new ErrorDialog(this, "Harga/Stok tidak boleh minus!").setVisible(true);
                 return;
             }
-            if (type.equals("Makanan")) resultItem = menuFactory.createFood(name, price, stock);
+            // Menggunakan konstanta TYPE_FOOD
+            if (type.equals(TYPE_FOOD)) resultItem = menuFactory.createFood(name, price, stock);
             else resultItem = menuFactory.createDrink(name, price, stock);
             confirmed = true;
             dispose();
@@ -116,13 +131,15 @@ public class MenuDialog extends JDialog {
     private void addLabel(JPanel p, String text, int y, GridBagConstraints gbc) {
         gbc.gridx = 0; gbc.gridy = y;
         JLabel l = new JLabel(text);
-        l.setFont(new Font("SansSerif", Font.BOLD, 14));
+        // Menggunakan konstanta FONT_NAME
+        l.setFont(new Font(FONT_NAME, Font.BOLD, 14));
         l.setForeground(CafeTheme.TEXT_COLOR);
         p.add(l, gbc);
     }
     private JTextField createTextField() {
         JTextField t = new JTextField();
-        t.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        // Menggunakan konstanta FONT_NAME
+        t.setFont(new Font(FONT_NAME, Font.PLAIN, 14));
         t.setBorder(BorderFactory.createCompoundBorder(new LineBorder(CafeTheme.EXIT_BTN_COLOR, 1), new EmptyBorder(5, 5, 5, 5)));
         t.setPreferredSize(new Dimension(200, 35));
         return t;

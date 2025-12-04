@@ -1,8 +1,9 @@
-package cafe.service;
+package cafe.test;
 
 import cafe.model.MenuItem;
 import cafe.model.Food;
 import cafe.exception.MenuNotFoundException;
+import cafe.service.MenuService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

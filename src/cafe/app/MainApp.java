@@ -4,9 +4,13 @@ import cafe.factory.MenuFactory;
 import cafe.service.MenuService;
 import cafe.gui.MainFrame; 
 import javax.swing.SwingUtilities; 
+import java.util.logging.Logger; 
 
 public class MainApp {
     
+    // Deklarasi logger statis untuk kelas ini
+    private static final Logger LOGGER = Logger.getLogger(MainApp.class.getName());
+
     public static void main(String[] args) {
         // 1. Load Data Awal (agar menu tidak kosong)
         initializeData();
@@ -15,7 +19,8 @@ public class MainApp {
         SwingUtilities.invokeLater(() -> {
             MainFrame app = new MainFrame();
             app.setVisible(true);
-            System.out.println("GUI Berhasil Dijalankan. Cek jendela baru yang muncul.");
+            
+            LOGGER.info("GUI Berhasil Dijalankan. Cek jendela baru yang muncul.");
         });
     }
 
@@ -32,8 +37,8 @@ public class MainApp {
             menuService.addMenu(menuFactory.createDrink("Coffee", 10000, 50));
             menuService.addMenu(menuFactory.createDrink("Latte", 15000, 40));
             menuService.addMenu(menuFactory.createDrink("Matcha Latte", 18000, 30));
-            
-            System.out.println("System: Data awal berhasil dimuat.");
+           
+            LOGGER.info("System: Data awal berhasil dimuat.");
         }
     }
 }

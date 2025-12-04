@@ -1,8 +1,8 @@
-package cafe.gui.customer; 
+package cafe.gui.customer;
 
 import cafe.gui.MainFrame;
 import cafe.gui.CafeTheme;
-import cafe.gui.common.MessageDialog; 
+import cafe.gui.common.MessageDialog;
 import cafe.service.MenuService;
 import cafe.service.OrderService;
 import cafe.model.MenuItem;
@@ -19,17 +19,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 public class CustomerPanel extends JPanel {
-    private MenuService menuService = MenuService.getInstance();
-    private OrderService orderService = OrderService.getInstance();
+    private transient MenuService menuService = MenuService.getInstance();
+    private transient OrderService orderService = OrderService.getInstance();
+
     private MainFrame mainFrame;
-    
-    // Komponen yang dipisah ke file lain
+
     private CustomerMenuPanel menuPanel;
     private CustomerCartPanel cartPanel;
-    
-    private String currentCategory = "FOOD"; 
+
+    private String currentCategory = "FOOD";
 
     public CustomerPanel(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
@@ -37,30 +36,24 @@ public class CustomerPanel extends JPanel {
         setBackground(CafeTheme.BG_COLOR);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Inisialisasi Panel Kiri (Menu)
+        // Panel kiri: daftar menu
         menuPanel = new CustomerMenuPanel(this);
         add(menuPanel, BorderLayout.CENTER);
-        
-        // Inisialisasi Panel Kanan (Keranjang)
+
+        // Panel kanan: keranjang belanja
         cartPanel = new CustomerCartPanel(this);
         add(cartPanel, BorderLayout.EAST);
 
-        refreshData(); 
+        refreshData();
     }
 
-    // --- LOGIKA UTAMA ---
-
-    /**
-     * Mengganti kategori menu yang ditampilkan (Makanan/Minuman).
-     */
+    /** Mengubah kategori menu yang sedang ditampilkan. */
     public void switchCategory(String cat) {
         this.currentCategory = cat;
         refreshData();
     }
 
-    /**
-     * Memperbarui tampilan tabel menu dan list keranjang.
-     */
+    /** Memperbarui menu dan keranjang di UI. */
     public void refreshData() {
         if (menuPanel != null) menuPanel.refreshData(currentCategory);
         updateCartDisplay();
@@ -68,41 +61,42 @@ public class CustomerPanel extends JPanel {
 
     private void updateCartDisplay() {
         if (cartPanel != null) {
-            // Grouping item keranjang agar item sama tidak muncul berkali-kali
+            // Gabungkan item keranjang berdasarkan nama supaya tidak muncul berulang
             Map<String, List<MenuItem>> grouped = orderService.getCart().stream()
-                .collect(Collectors.groupingBy(MenuItem::getName, LinkedHashMap::new, Collectors.toList()));
+                    .collect(Collectors.groupingBy(
+                            MenuItem::getName,
+                            LinkedHashMap::new,
+                            Collectors.toList()
+                    ));
             cartPanel.updateDisplay(grouped);
         }
     }
 
-    /**
-     * Logika saat tombol "Tambah" ditekan.
-     * Dipanggil oleh CustomerMenuPanel.
-     */
+    /** Dipanggil saat tombol "Tambah" ditekan. */
     public void addToCartAction(JTable table, TableModel model) {
         int row = table.getSelectedRow();
         if (row == -1) {
             new MessageDialog(mainFrame, "INFO", "Pilih menu dulu!").setVisible(true);
             return;
         }
-        
+
         String name = (String) model.getValueAt(row, 0);
-        // Cari object MenuItem asli berdasarkan nama
+
         MenuItem item = menuService.getAllMenu().stream()
-                .filter(m -> m.getName().equals(name)).findFirst().orElse(null);
-        
+                .filter(m -> m.getName().equals(name))
+                .findFirst()
+                .orElse(null);
+
         if (item != null) processAddItem(item);
     }
 
     private void processAddItem(MenuItem item) {
         try {
-            // Jika minuman, tampilkan opsi kustomisasi (Gula/Es/Toping)
             if (item instanceof Drink) {
                 DrinkOptionDialog d = new DrinkOptionDialog(mainFrame, item);
                 d.setVisible(true);
                 if (d.getResultItem() != null) addMultiple(d.getResultItem(), d.getQuantity());
             } else {
-                // Jika makanan, langsung tanya jumlah
                 QuantityDialog d = new QuantityDialog(mainFrame);
                 d.setVisible(true);
                 if (d.getQuantity() > 0) addMultiple(item, d.getQuantity());
@@ -113,36 +107,40 @@ public class CustomerPanel extends JPanel {
     }
 
     private void addMultiple(MenuItem item, int qty) {
-        for(int i=0; i<qty; i++) orderService.addToCart(item);
+        for (int i = 0; i < qty; i++) {
+            orderService.addToCart(item);
+        }
         updateCartDisplay();
     }
 
-    /**
-     * Logika Checkout (Pembayaran & Struk).
-     * Dipanggil oleh CustomerCartPanel.
-     */
+    /** Checkout: menghitung total, membuka dialog pembayaran & mencetak struk. */
     public void checkoutAction() {
         if (orderService.getCart().isEmpty()) {
-            new MessageDialog(mainFrame, "INFO", "Keranjang kosong!").setVisible(true); 
+            new MessageDialog(mainFrame, "INFO", "Keranjang kosong!").setVisible(true);
             return;
         }
-        
+
         List<MenuItem> items = new ArrayList<>(orderService.getCart());
-        double sub = items.stream().mapToDouble(MenuItem::getPrice).sum();
-        double ppn = sub * 0.1;
-        
-        PaymentDialog pd = new PaymentDialog(mainFrame, sub, ppn, sub + ppn);
+        double subtotal = items.stream().mapToDouble(MenuItem::getPrice).sum();
+        double tax = subtotal * 0.1;
+
+        PaymentDialog pd = new PaymentDialog(mainFrame, subtotal, tax, subtotal + tax);
         pd.setVisible(true);
-        
+
         if (pd.isConfirmed()) {
-            orderService.checkout(); // Simpan Transaksi & Kosongkan Keranjang
-            
-            // Tampilkan Struk di Layar
-            new ReceiptDialog(mainFrame, items, sub, ppn, sub+ppn, pd.getPaymentAmount()).setVisible(true);
-            
-            // Cetak Struk ke TXT
-            ReceiptPrinter.printToTxt(items, sub+ppn, pd.getPaymentAmount());
-            
+            orderService.checkout();
+
+            new ReceiptDialog(
+                    mainFrame,
+                    items,
+                    subtotal,
+                    tax,
+                    subtotal + tax,
+                    pd.getPaymentAmount()
+            ).setVisible(true);
+
+            ReceiptPrinter.printToTxt(items, subtotal + tax, pd.getPaymentAmount());
+
             refreshData();
         }
     }
