@@ -8,15 +8,19 @@ import cafe.service.MenuService;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import javax.swing.SwingConstants; 
 
 public class CustomerMenuPanel extends JPanel {
+    
     private JTable menuTable;
     private DefaultTableModel menuModel;
-    private MenuService menuService = MenuService.getInstance();
-    private CustomerPanel parent;
+    
+    private transient MenuService menuService = MenuService.getInstance();
+    
+    private CustomerPanel customerParent;
 
     public CustomerMenuPanel(CustomerPanel parent) {
-        this.parent = parent;
+        this.customerParent = parent; 
         setLayout(new BorderLayout(0, 10));
         setOpaque(false);
         initUI();
@@ -38,13 +42,15 @@ public class CustomerMenuPanel extends JPanel {
 
         RoundedButton btnAdd = new RoundedButton("Tambah ke Keranjang (+)");
         btnAdd.setPreferredSize(new Dimension(0, 50));
-        btnAdd.addActionListener(e -> parent.addToCartAction(menuTable, menuModel));
+        btnAdd.addActionListener(e -> customerParent.addToCartAction(menuTable, menuModel));
         add(btnAdd, BorderLayout.SOUTH);
     }
 
     private void initTable() {
         String[] cols = {"Nama", "Harga", "Stok"};
         menuModel = new DefaultTableModel(cols, 0) {
+            
+            @Override
             public boolean isCellEditable(int row, int col) { return false; }
         };
         menuTable = new JTable(menuModel);
@@ -55,7 +61,9 @@ public class CustomerMenuPanel extends JPanel {
         header.setForeground(Color.WHITE);
         header.setFont(new Font("SansSerif", Font.BOLD, 14));
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
-        center.setHorizontalAlignment(JLabel.CENTER);
+        
+        center.setHorizontalAlignment(SwingConstants.CENTER);
+        
         menuTable.getColumnModel().getColumn(1).setCellRenderer(center);
         menuTable.getColumnModel().getColumn(2).setCellRenderer(center);
     }
@@ -65,7 +73,7 @@ public class CustomerMenuPanel extends JPanel {
         btn.setFont(new Font("SansSerif", Font.BOLD, 16));
         btn.setFocusPainted(false);
         btn.setBackground(CafeTheme.BUTTON_COLOR);
-        btn.addActionListener(e -> parent.switchCategory(catCode));
+        btn.addActionListener(e -> customerParent.switchCategory(catCode)); 
         return btn;
     }
 

@@ -74,7 +74,8 @@ public class ErrorDialog extends JDialog {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            int w = getWidth(); int h = getHeight(); int size = 50;
+            int w = getWidth();     
+            int size = 50;
             
             g2.setColor(new Color(200, 60, 60));
             int[] xPoints = {w/2, w-5, 5};

@@ -3,28 +3,30 @@ package cafe.gui;
 import cafe.gui.admin.AdminPanel;
 import cafe.gui.customer.CustomerPanel;
 import cafe.gui.common.ConfirmDialog;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainFrame extends JFrame {
     private CardLayout cardLayout;
     private JPanel mainPanel;
-    
-    private LoginPanel loginPanel;
-    private AdminPanel adminPanel;
-    private CustomerPanel customerPanel;
+
+    // Map untuk menyimpan aksi refresh tiap panel
+    private final Map<String, Runnable> refreshActions = new HashMap<>();
 
     public MainFrame() {
         setTitle("Cafe Logic App");
-        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         setSize(1000, 700);
         setLocationRelativeTo(null);
 
         initLayout();
-        initPanels(); // <--- Pastikan ini dipanggil di sini!
-        
-        cardLayout.show(mainPanel, "LOGIN"); 
-        
+        initPanels();
+
+        cardLayout.show(mainPanel, "LOGIN");
+
         addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
@@ -40,24 +42,29 @@ public class MainFrame extends JFrame {
     }
 
     private void initPanels() {
-        // [PENTING] Inisialisasi variabel DULUan
-        loginPanel = new LoginPanel(this);
-        adminPanel = new AdminPanel(this);
-        customerPanel = new CustomerPanel(this);
+        // Panel sebagai variabel lokal (tidak jadi field)
+        LoginPanel loginPanel = new LoginPanel(this);
+        AdminPanel adminPanel = new AdminPanel(this);
+        CustomerPanel customerPanel = new CustomerPanel(this);
 
-        // [PENTING] Baru ditambahkan ke panel SETELAH diinisialisasi
-        // Jika urutannya terbalik, akan error NullPointerException "comp is null"
-        if (loginPanel != null) mainPanel.add(loginPanel, "LOGIN");
-        if (adminPanel != null) mainPanel.add(adminPanel, "ADMIN");
-        if (customerPanel != null) mainPanel.add(customerPanel, "CUSTOMER");
+        // Tambahkan ke mainPanel
+        mainPanel.add(loginPanel, "LOGIN");
+        mainPanel.add(adminPanel, "ADMIN");
+        mainPanel.add(customerPanel, "CUSTOMER");
+
+        // Daftarkan fungsi refresh
+        refreshActions.put("ADMIN", adminPanel::refreshTable);
+        refreshActions.put("CUSTOMER", customerPanel::refreshData);
     }
 
     public void showCard(String cardName) {
-        if (cardName.equals("ADMIN")) adminPanel.refreshTable();
-        if (cardName.equals("CUSTOMER")) customerPanel.refreshData();
+        // Jalankan fungsi refresh jika ada
+        Runnable action = refreshActions.get(cardName);
+        if (action != null) action.run();
+
         cardLayout.show(mainPanel, cardName);
     }
-    
+
     private void confirmExit() {
         ConfirmDialog dialog = new ConfirmDialog(this, "KELUAR", "Yakin ingin menutup aplikasi?");
         dialog.setVisible(true);

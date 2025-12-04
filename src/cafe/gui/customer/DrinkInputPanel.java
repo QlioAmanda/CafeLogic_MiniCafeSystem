@@ -6,15 +6,23 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class DrinkInputPanel extends JPanel {
-    public JRadioButton rbIce, rbHot;
-    public JComboBox<String> cbSize;
-    public JCheckBox chkBoba, chkCream, chkCheese, chkSugar;
-    public JSpinner spinQty;
+    
+    private JRadioButton rbIce;
+    private JRadioButton rbHot;
+    
+    private JComboBox<String> cbSize;
+    
+    private JCheckBox chkBoba; 
+    private JCheckBox chkCream; 
+    private JCheckBox chkCheese; 
+    private JCheckBox chkSugar;
+    
+    private JSpinner spinQty;
 
     public DrinkInputPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(CafeTheme.BG_COLOR);
-        // [FIX 1]: Ubah bottom margin dari 10px menjadi 0px
+    
         setBorder(new EmptyBorder(10, 30, 0, 30)); 
         
         initSuhu();
@@ -91,4 +99,15 @@ public class DrinkInputPanel extends JPanel {
         l.setForeground(CafeTheme.TEXT_COLOR); 
         add(l);
     }
+    
+    // --- Accessor (Getter) Methods untuk mengakses komponen private ---
+    
+    public JRadioButton getRbIce() { return rbIce; }
+    public JRadioButton getRbHot() { return rbHot; }
+    public JComboBox<String> getCbSize() { return cbSize; }
+    public JCheckBox getChkBoba() { return chkBoba; }
+    public JCheckBox getChkCream() { return chkCream; }
+    public JCheckBox getChkCheese() { return chkCheese; }
+    public JCheckBox getChkSugar() { return chkSugar; }
+    public JSpinner getSpinQty() { return spinQty; }
 }

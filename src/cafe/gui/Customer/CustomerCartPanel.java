@@ -1,4 +1,4 @@
-package cafe.gui.customer; 
+package cafe.gui.customer;
 
 import cafe.gui.CafeTheme;
 import cafe.gui.components.RoundedButton;
@@ -9,12 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 public class CustomerCartPanel extends JPanel {
+
     private DefaultListModel<String> cartModel;
     private JLabel totalLabel;
-    private CustomerPanel parent;
+    private CustomerPanel parentPanel; 
 
-    public CustomerCartPanel(CustomerPanel parent) {
-        this.parent = parent;
+    public CustomerCartPanel(CustomerPanel parentPanel) {
+        this.parentPanel = parentPanel;
         setLayout(new BorderLayout(0, 10));
         setPreferredSize(new Dimension(320, 0));
         setOpaque(false);
@@ -49,26 +50,28 @@ public class CustomerCartPanel extends JPanel {
         btnCheckout.setPreferredSize(new Dimension(300, 50));
         btnCheckout.setMaximumSize(new Dimension(320, 50));
         btnCheckout.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnCheckout.addActionListener(e -> parent.checkoutAction());
+        btnCheckout.addActionListener(e -> parentPanel.checkoutAction());
 
         RoundedButton btnLogout = new RoundedButton("Keluar");
         btnLogout.setBackground(new Color(180, 60, 60));
         btnLogout.setPreferredSize(new Dimension(300, 40));
         btnLogout.setMaximumSize(new Dimension(320, 40));
         btnLogout.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btnLogout.addActionListener(e -> parent.logoutAction());
+        btnLogout.addActionListener(e -> parentPanel.logoutAction());
 
         panel.add(totalLabel);
         panel.add(Box.createVerticalStrut(15));
         panel.add(btnCheckout);
         panel.add(Box.createVerticalStrut(10));
         panel.add(btnLogout);
+
         return panel;
     }
 
     public void updateDisplay(Map<String, List<MenuItem>> grouped) {
         cartModel.clear();
         double grandTotal = 0;
+
         for (Map.Entry<String, List<MenuItem>> entry : grouped.entrySet()) {
             double price = entry.getValue().get(0).getPrice();
             int qty = entry.getValue().size();
@@ -76,6 +79,7 @@ public class CustomerCartPanel extends JPanel {
             cartModel.addElement(String.format("%s x%d - %,.0f", entry.getKey(), qty, sub));
             grandTotal += sub;
         }
+
         totalLabel.setText(String.format("Total: Rp %,.0f", grandTotal));
     }
 }

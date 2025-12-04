@@ -2,8 +2,7 @@ package cafe.gui;
 
 import cafe.gui.components.RoundedButton;
 import cafe.gui.admin.AdminLoginDialog; 
-import cafe.gui.common.ConfirmDialog;   
-import cafe.service.LoginService;
+import cafe.gui.common.ConfirmDialog; 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextAttribute;
@@ -25,7 +24,7 @@ public class LoginPanel extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
 
         // 1. LOGO KOPI
-        LogoPanel logo = new LogoPanel();
+        LogoPanel logo = new LogoPanel(); 
         logo.setPreferredSize(new Dimension(120, 120));
         logo.setBackground(CafeTheme.BG_COLOR);
         gbc.gridy = 0;
@@ -33,7 +32,7 @@ public class LoginPanel extends JPanel {
         add(logo, gbc);
 
         // 2. TEXT: SELAMAT DATANG
-        JLabel welcomeLabel = new JLabel("S E L A M A T   D A T A N G");
+        JLabel welcomeLabel = new JLabel("S E L A M A T   D A T A N G"); 
         welcomeLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
         welcomeLabel.setForeground(CafeTheme.TEXT_COLOR);
         
@@ -97,11 +96,11 @@ public class LoginPanel extends JPanel {
         btnCustomer.addActionListener(e -> mainFrame.showCard("CUSTOMER"));
         
         btnExit.addActionListener(e -> {
-             ConfirmDialog dialog = new ConfirmDialog(mainFrame, "KELUAR", "Apakah Anda yakin ingin menutup aplikasi?");
-             dialog.setVisible(true);
-             if (dialog.isConfirmed()) System.exit(0);
+            ConfirmDialog dialog = new ConfirmDialog(mainFrame, "KELUAR", "Apakah Anda yakin ingin menutup aplikasi?");
+            dialog.setVisible(true);
+            if (dialog.isConfirmed()) System.exit(0);
         });
-    }
+    } 
 
     private void handleAdminLogin() {
         AdminLoginDialog loginDialog = new AdminLoginDialog(mainFrame);
@@ -126,57 +125,61 @@ public class LoginPanel extends JPanel {
             Color shadowColor = baseColor.darker();
             Color liquidColor = new Color(101, 67, 33);
 
-            int cupW = 70;
-            int cupH = 50;
-            int cupX = (w - cupW) / 2;
-            int cupY = (h - cupH) / 2 + 15;
+            double cupW = 70.0; 
+            double cupH = 50.0; 
+            
+            // Variabel posisi cangkir
+            double cupX = (w - cupW) / 2.0; 
+            double cupY = (h - cupH) / 2.0 + 15.0; 
 
-            // Piringan
+            // Piringan 
             g2.setColor(shadowColor);
-            g2.fillOval(cupX - 15, cupY + cupH - 8, cupW + 30, 12);
+            g2.fillOval((int) (cupX - 15.0), (int) (cupY + cupH - 8.0), (int) (cupW + 30.0), 12); 
             g2.setColor(baseColor);
-            g2.fillOval(cupX - 12, cupY + cupH - 10, cupW + 24, 10);
+            g2.fillOval((int) (cupX - 12.0), (int) (cupY + cupH - 10.0), (int) (cupW + 24.0), 10);
 
             // Gagang
             g2.setStroke(new BasicStroke(6, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             g2.setColor(baseColor);
             Path2D handle = new Path2D.Double();
-            handle.moveTo(cupX + cupW - 5, cupY + 10);
-            handle.curveTo(cupX + cupW + 25, cupY + 5, cupX + cupW + 25, cupY + 35, cupX + cupW - 10, cupY + 40);
+            handle.moveTo(cupX + cupW - 5.0, cupY + 10.0);
+            handle.curveTo(cupX + cupW + 25.0, cupY + 5.0, cupX + cupW + 25.0, cupY + 35.0, cupX + cupW - 10.0, cupY + 40.0);
             g2.draw(handle);
 
             // Badan
-            GradientPaint gradient = new GradientPaint(cupX, cupY, baseColor.brighter(), cupX + cupW, cupY, shadowColor);
+            GradientPaint gradient = new GradientPaint((float)cupX, (float)cupY, baseColor.brighter(), (float)(cupX + cupW), (float)cupY, shadowColor);
             g2.setPaint(gradient);
-            RoundRectangle2D cupBody = new RoundRectangle2D.Double(cupX, cupY, cupW, cupH, 20, 30);
+            RoundRectangle2D cupBody = new RoundRectangle2D.Double(cupX, cupY, cupW, cupH, 20.0, 30.0);
             g2.fill(cupBody);
 
             // Cairan
             g2.setColor(liquidColor);
-            g2.fillOval(cupX + 3, cupY + 2, cupW - 6, 14);
+            g2.fillOval((int) (cupX + 3.0), (int) (cupY + 2.0), (int) (cupW - 6.0), 14);
             g2.setStroke(new BasicStroke(2));
             g2.setColor(baseColor.brighter());
-            g2.drawOval(cupX + 2, cupY + 1, cupW - 4, 16);
+            g2.drawOval((int) (cupX + 2.0), (int) (cupY + 1.0), (int) (cupW - 4.0), 16);
 
             // Uap
             g2.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             g2.setColor(new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 180));
-            int steamStartX = cupX + 20;
-            int steamStartY = cupY - 5;
+    
+            double steamStartX = cupX + 20.0;
+            double steamStartY = cupY - 5.0;
             
             Path2D steam1 = new Path2D.Double();
             steam1.moveTo(steamStartX, steamStartY);
-            steam1.curveTo(steamStartX - 10, steamStartY - 15, steamStartX + 5, steamStartY - 25, steamStartX - 5, steamStartY - 35);
+            steam1.curveTo(steamStartX - 10.0, steamStartY - 15.0, steamStartX + 5.0, steamStartY - 25.0, steamStartX - 5.0, steamStartY - 35.0);
             g2.draw(steam1);
 
             Path2D steam2 = new Path2D.Double();
-            steam2.moveTo(steamStartX + 15, steamStartY - 5);
-            steam2.curveTo(steamStartX + 5, steamStartY - 20, steamStartX + 25, steamStartY - 30, steamStartX + 10, steamStartY - 45);
+            steam2.moveTo(steamStartX + 15.0, steamStartY - 5.0);
+            steam2.curveTo(steamStartX + 5.0, steamStartY - 20.0, steamStartX + 25.0, steamStartY - 30.0, steamStartX + 10.0, steamStartY - 45.0);
             g2.draw(steam2);
 
             Path2D steam3 = new Path2D.Double();
-            steam3.moveTo(steamStartX + 30, steamStartY);
-            steam3.curveTo(steamStartX + 20, steamStartY - 15, steamStartX + 35, steamStartY - 25, steamStartX + 25, steamStartY - 35);
+            steam3.moveTo(steamStartX + 30.0, steamStartY);
+            // Kode ini sekarang bersih karena semua operasi adalah double + double
+            steam3.curveTo(steamStartX + 20.0, steamStartY - 15.0, steamStartX + 35.0, steamStartY - 25.0, steamStartX + 25.0, steamStartY - 35.0);
             g2.draw(steam3);
 
             g2.dispose();
