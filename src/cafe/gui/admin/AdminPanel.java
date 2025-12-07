@@ -14,7 +14,12 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class AdminPanel extends JPanel {
-    private MenuService menuService = MenuService.getInstance();
+    
+    // Perbaikan 2: Definisikan konstanta untuk literal yang berulang
+    private static final String SUCCESS_TITLE = "SUKSES";
+    
+    // Perbaikan 1: Tambahkan 'transient' untuk mematuhi S1948 (Non-serializable field)
+    private transient MenuService menuService = MenuService.getInstance(); 
     private AdminTablePanel tablePanel; 
     private MainFrame mainFrame;
 
@@ -93,8 +98,8 @@ public class AdminPanel extends JPanel {
         if (d.isConfirmed()) {
             menuService.addMenu(d.getResultItem());
             refreshTable();
-            // [PERBAIKAN] Munculkan Popup Sukses
-            new MessageDialog(mainFrame, "SUKSES", "Menu berhasil ditambahkan!").setVisible(true);
+            // Menggunakan konstanta SUCCESS_TITLE
+            new MessageDialog(mainFrame, SUCCESS_TITLE, "Menu berhasil ditambahkan!").setVisible(true);
         }
     }
 
@@ -112,8 +117,8 @@ public class AdminPanel extends JPanel {
         if (d.isConfirmed()) {
             menuService.editMenu(r, d.getResultItem());
             refreshTable();
-            // [PERBAIKAN] Munculkan Popup Sukses
-            new MessageDialog(mainFrame, "SUKSES", "Menu berhasil diperbarui!").setVisible(true);
+            // Menggunakan konstanta SUCCESS_TITLE
+            new MessageDialog(mainFrame, SUCCESS_TITLE, "Menu berhasil diperbarui!").setVisible(true);
         }
     }
 
@@ -130,8 +135,8 @@ public class AdminPanel extends JPanel {
         if (d.isConfirmed()) {
             menuService.deleteMenu(r);
             refreshTable();
-            // [PERBAIKAN] Munculkan Popup Sukses
-            new MessageDialog(mainFrame, "SUKSES", "Menu berhasil dihapus!").setVisible(true);
+            // Menggunakan konstanta SUCCESS_TITLE
+            new MessageDialog(mainFrame, SUCCESS_TITLE, "Menu berhasil dihapus!").setVisible(true);
         }
     }
 }
